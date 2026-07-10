@@ -1,0 +1,458 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+  <title>fyreaken.space</title>
+  <link rel="stylesheet" href="css/tailwind.min.css">
+  <link rel="icon" type="image/x-icon" href="icon.ico">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<style>
+.overlay-modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.85);
+  display: flex;
+  justify-content: center;    /* Horizontal center */
+  align-items: flex-start;    /* Move to top instead of center */
+  padding-top: 2rem;          /* Add space from top */
+  z-index: 999;
+  max-height: 100vh;
+  overflow-y: scroll;
+}
+
+.overlay-content {
+  background-color: rgba(0, 0, 0, 0.75);
+  color: white;
+  padding: 2rem;
+  width: 60%;
+  max-width: 800px;
+  max-height: 90vh;
+  border-radius: 8px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+}
+
+#FROSTsection a, #FROSTonclick a , #CAMOonclick a, #STREETGAMEonclick a, #DAYTOENDonclick a, #LEGOUNIVERSEonclick a, #FALLOUT76onclick a, #PS4onclick a {
+  text-decoration: none;
+}
+a, #INSTALLsection a, #DLsection a , #CAMODLsection a, #CONTINGENTsection a{
+  text-decoration: underline;
+  color: rgb(47, 72, 129);
+}
+
+::-webkit-scrollbar {
+width: 5px;
+background:rgb(97, 97, 97);
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background:rgb(54, 54, 54);
+}
+
+/* Mobile override: uncenter content strictly */
+@media screen and (max-width: 900px) {
+  .overlay-modal {
+    justify-content: flex-start !important;
+    align-items: flex-start !important;
+  }
+
+  .overlay-content {
+    margin-top: 2rem;
+    padding: 1rem;
+    width: 100%;
+    height: 100%;
+  }
+}
+</style>
+
+
+
+<style>
+  @keyframes flicker {
+    /* Flicker ON phase (~0–0.6s) */
+    0%, 2%, 4%, 6%, 8% { opacity: 0; }
+    1%, 3%, 5%, 7%, 9% { opacity: 1; }
+
+    /* Steady ON for 1 second (0.6s–1.6s = 10%–24%) */
+    10%, 24% { opacity: 1; }
+
+    /* Flicker OFF (~1.6s–2s = 25%–30%) */
+    25%, 27%, 29% { opacity: 0; }
+    26%, 28%, 30% { opacity: 1; }
+
+    /* OFF hold (2s–7s = 31%–100%) */
+    31%, 100% { opacity: 0; }
+  }
+
+  .flicker {
+    animation: flicker 7s infinite;
+  }
+</style>
+
+
+
+
+
+  <style>
+    * {
+      -webkit-tap-highlight-color: transparent;
+      -webkit-touch-callout: none;
+    }
+    button, img {
+      outline: none;
+    }
+    @media (max-width: 300px) {
+      body, html {
+        text-align: center;
+      }
+      #startOverlay {
+        align-items: center !important;
+        justify-content: center !important;
+      }
+      img {
+        margin-left: auto;
+        margin-right: auto;
+        display: block;
+      }
+    }
+  </style>
+
+
+  <style>
+    * {
+      -webkit-tap-highlight-color: transparent;
+      -webkit-touch-callout: none;
+    }
+    button, img {
+      outline: none;
+    }
+  </style>
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  </head>
+  <body class=" m-0 p-0 overflow-hidden">
+    
+    <script src="app.js"></script>
+
+<canvas id="ps2BootBg"></canvas>
+<script>
+const canvas = document.getElementById('ps2BootBg');
+const ctx = canvas.getContext('2d');
+canvas.width = window.innerWidth;
+canvas.height = window.innerHeight;
+
+let particles = [];
+for (let i = 0; i < 100; i++) {
+  particles.push({
+    x: Math.random() * canvas.width,
+    y: Math.random() * canvas.height,
+    r: Math.random() * 1.5 + 0.5,
+    alpha: Math.random(),
+    speed: Math.random() * 0.5 + 0.2
+  });
+}
+
+function draw(time) {
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+  let grad = ctx.createRadialGradient(canvas.width/2, canvas.height/2, 0, canvas.width/2, canvas.height/2, canvas.width);
+  grad.addColorStop(0, '#011222');
+  grad.addColorStop(1, '#000000');
+  ctx.fillStyle = grad;
+  ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+  ctx.globalAlpha = 0.04;
+  ctx.strokeStyle = "#3273a8";
+  ctx.lineWidth = 1.5;
+  ctx.beginPath();
+  for (let x = 0; x < canvas.width; x += 5) {
+    let y = canvas.height / 2 + Math.sin(x * 0.01 + time * 0.001) * 30;
+    ctx.lineTo(x, y);
+  }
+  ctx.stroke();
+
+  ctx.globalAlpha = 1;
+  particles.forEach(p => {
+    p.alpha += (Math.random() - 0.5) * 0.05;
+    p.alpha = Math.max(0, Math.min(1, p.alpha));
+    p.y -= p.speed;
+    if (p.y < 0) p.y = canvas.height;
+
+    ctx.beginPath();
+    ctx.fillStyle = `rgba(173,216,230,${p.alpha})`;
+    ctx.arc(p.x, p.y, p.r, 0, 2 * Math.PI);
+    ctx.fill();
+  });
+
+  requestAnimationFrame(draw);
+}
+requestAnimationFrame(draw);
+</script>
+<style>
+  canvas#ps2BootBg {
+    position: fixed;
+    top: 0; left: 0;
+    width: 100vw; height: 100vh;
+    z-index: -1;
+  }
+</style>
+
+
+<div id="browser-content" class="custom-page-content hidden">
+  <script src="index.js"></script>
+  <h2 class="text-2xl font-bold mb-4">The Exchange</h2>
+  <br><br><br><br><br><br><br>
+  <a target="_parent" href="https://www.ebay.co.uk/usr/fyreakenspace"><img style='border:2px solid #2f4881' src="icons/ebay.png" width="96" alt=""></a>
+  <img src="img/br.png" width="5" alt="">
+  <a target="_parent" href="https://store.bricklink.com/fyreaken"><img style='border:2px solid #2f4881' src="icons/bricklink.png" width="96" alt=""></a>
+  <img src="img/br.png" width="5" alt="">
+  <a target="_parent" href="https://www.etsy.com/shop/fyreakenspace"><img style='border:2px solid #2f4881' src="icons/etsy.png" width="96" alt=""></a>
+  <br>
+  ㅤㅤEbayㅤㅤㅤㅤBricklinkㅤㅤㅤㅤEtsy
+  <br><br><br><br><br><br><br><br><br><br><br><br><br><br>
+</div>
+
+<div id="system-configuration-content" class="custom-page-content hidden">
+  <script src="index.js"></script>
+  <h2 class="text-2xl font-bold mb-4">Links</h2>
+  <br><br><br><br><br><br><br>
+  <a target="_parent" href="https://steamcommunity.com/id/Fyreaken"><img style='border:2px solid #2f4881' src="img/links/steam.png" width="96" alt=""></a>
+  <img src="img/br.png" width="5" alt="">
+  <a target="_parent" href="https://github.com/fyreaken"><img style='border:2px solid #2f4881' src="img/links/githu-b.png" width="96" alt=""></a>
+  <img src="img/br.png" width="5" alt="">
+  <a target="_parent" href="https://www.linkedin.com/in/fyreakendev/"><img style='border:2px solid #2f4881' src="img/links/linkedi-n.png" width="96" alt=""></a>
+    <br>
+  ㅤﾠSteamㅤㅤㅤㅤGithubㅤㅤㅤﾠLinkedin
+  <br><br>
+  <a target="_parent" href="https://twitter.com/fyreaken"><img style='border:2px solid #2f4881' src="img/links/twitte-r.png" width="96" alt=""></a>
+  <img src="img/br.png" width="5" alt="">
+  <a target="_parent" href="https://buymeacoffee.com/fyreaken"><img style='border:2px solid #2f4881' src="img/links/bmc.png" width="96" alt=""></a>
+    <br>
+  ㅤﾠTwitterㅤㅤﾠBuy a coffeeㅤㅤㅤㅤ
+  <br><br><br><br><br><br><br><br>
+</div>
+
+<div id="memory-card-content" class="custom-page-content hidden">
+  <script src="index.js"></script>
+  <h2 class="text-2xl font-bold mb-4">Projects</h2><br><br><br>
+  <p>If you are interested in my work and want further details, please look at my <a target="_parent" href="https://www.linkedin.com/in/fyreakendev/">LinkedIn</a>.<br>
+    I'm based in the United Kingdom, around Devon and Cornwall.<br><br><br>
+
+    <div id="STREETGAMEonclick">
+    <h5>[proto] StreetGame<a href="#streetgame" onclick="STREETGAMEfunction();">  ▼</a></h5>
+    prototype released May 2022 while studying BSc (Hons) Computing & Games Development at Plymouth University<br><br>
+      <div id="STREETGAMEsection" style="display:none">
+        <img src="img/streetgame.png" width="1272" alt=""><br>
+        <p>StreetGame is a game prototype with a first person perspective, where the player can move around,
+        pick up objects and throw them. There are some platforming elements aswell, the player can jump
+        and stack objects to get over walls.</p><br>
+        
+        Written in C# using VS Code and built in Unity 2021.2.15f1.<br><br>
+        
+        <b>The player has alot of functionality in this prototype:</b><br>
+        • Player can move and look around in first person.<br>
+        • Can jump and climb on top of objects.<br>
+        • Pick up objects and throw them.<br>
+        • Collect Gold and Win after collecting enough.<br>
+        • Pause the game using the ESC key.<br><br>
+        
+        <a href="https://unity.com/"><img src="img/unity.png" width="73.6" alt=""></a>
+        <a href="https://fyreaken.itch.io/streetgame"><img src="img/itchio-textless-black.png" width="30" alt=""></a>
+        <a href="https://github.com/fyreaken/COMP2007-StreetGame"><img src="img/icons8-github-64.png" width="34" alt=""></a>
+        <br><br><br><br>
+      </div>
+
+
+    <div id="DAYTOENDonclick">
+    <h5>[proto] A Day To End<a href="#daytoend" onclick="DAYTOENDfunction();">  ▼</a></h5>
+    prototype released January 2023 while studying BSc (Hons) Computing & Games Development at Plymouth University<br><br>
+      <div id="DAYTOENDsection" style="display:none">
+        <img src="img/adaytoend7.png" width="1272" alt=""><br>
+        <p>A Day to End is a horror game that uses PlayStation 2 graphics to bring back the nostalgic
+        feeling of the horror games we grew up with. A Day to End is a maze/escape type of game that
+        has many levels and a variety of different and unique Monsters for each level.</p><br>
+
+        Written in C# and built in Unity 2021.3.11f1.<br><br>
+
+        <a href="https://unity.com/"><img src="img/unity.png" width="73.6" class="img-fluid" alt=""></a>
+        <a href="https://triios.wixsite.com/adaytoend/a-day-to-end"><img src="img/icons8-web-design-64.png" width="30" class="img-fluid" alt=""></a>
+        <a href="https://github.com/fyreaken/3013-trios"><img src="img/icons8-github-64.png" width="34" class="img-fluid" alt=""></a>
+        <br><br><br><br>
+      </div>    
+
+
+    <div id="CONTINGENTonclick">
+    <h5>[multiplayer proto] CONTINGENT<a href="#contingent" onclick="CONTINGENTfunction();">  ▼</a></h5>
+    prototype released May 2023 while studying BSc (Hons) Computing & Games Development at Plymouth University<br><br>
+      <div id="CONTINGENTsection" style="display:none">
+        <img src="img/thumbnail.jpg" width="1272" alt=""><br>
+        CONTINGENT is a multiplayer PVP third-person shooter game
+        where players can fight each other using a variety of deadly weapons in an online free
+        for all deathmatch mode.<br><br>
+
+        Written in C# using VS Code and built in Unity 2021.2.15f1 with <a href="https://www.alteruna.com/home">Alteruna</a>
+        and its <a href="https://assetstore.unity.com/packages/tools/network/alteruna-multiplayer-sdk-217234">Multiplayer SDK</a>.<br><br>
+
+        Planned Features:<br>
+        • Player versus player deathmatch: defeat online players to rack up kills and win.<br>
+        • Become UNSTABLE: Kill players to charge your ultimate ability, transform into a being of void energy and wield the Trace Rifle.<br>
+        • Capture Point: Contest the point and capture it to gain a Powerful Weapon for a limited time.<br>
+        • Pick up weapons and ammo by finding caches on the map, or from defeated players.<br><br>
+
+        <a href="https://unity.com/"><img src="img/unity.png" width="73.6" class="img-fluid" alt=""></a>
+        <a href="https://www.alteruna.com/home"><img src="img/alterunalogo.png" width="97.8" class="img-fluid" alt=""></a>
+        <a href="https://fyreaken.itch.io/contingent"><img src="img/itchio-textless-black.png" width="30" class="img-fluid" alt=""></a>
+        <a href="https://github.com/fyreaken/COMP3000-projectwrench"><img src="img/icons8-github-64.png" width="34" class="img-fluid" alt=""></a>
+        <br><br>
+      </div>
+
+  </p><br><br><br><br><br><br>
+</div>
+
+<div id="cd-dvd-content" class="custom-page-content hidden">
+  <script src="index.js"></script>
+  <h2 class="text-2xl font-bold mb-4">Modding</h2><br><br><br><br>
+          <!-- LEGO UNIVERSE SECTION -->
+          <div id="LEGOUNIVERSEonclick">
+          <img src="img/legouniverse.png" width="372" class="img-fluid" alt=""><a href="#LEGOUNIVERSE" style="font-size: 50px"; onclick="LEGOUNIVERSEfunction();">  ▼</a></div>
+          <div id="LEGOUNIVERSE" style="display:none"><br>
+            <p>
+              Modding opens the possibility for the creation of new items and worlds for Lego Universe, and the restoration of unreleased/cut content. It isn't the most user friendly though, requiring some setup and understanding to start.
+              <br><br>First you need to acquire a client and unpack it. You can find them on the internet, lcdr/humanoid client is recommended. After, you should be looking for a file named "cdclient.fdb". This is Lego Universe's database. 
+              To edit this file, it needs to be converted to .sqlite. Use <a href="https://fdb.lu-dev.net">fdb.lu-dev.net</a> or <a href="https://github.com/lcdr/utils">lcdr Utils</a> to do this.
+              <br><br>Most, if not all, guides/sections on this page will be making use of <a href="https://sqlitebrowser.org/">DB Browser</a> for modding. I recommend it for viewing and editing databases. 
+            </p><br><br>
+            <p>
+              <div id="FROSTonclick">
+              <h5>Frostburgh (22/01/24)<a href="#frostburgh" onclick="FROSTfunction();">  ▼</a></h5>
+              <div id="FROSTsection" style="display:none"><br>
+
+                <h5>⸺ Introducing Frostburgh</h5><br>
+                <h6 style="font-size: 14px">Aims to restore the Frostburgh seasonal zone and content, including missions & racing.</h6><br>
+                <img src="img/frostburgh.jpg" width="792" class="img-fluid" alt=""><br><br>
+                <h5>⸺ Installation<a href="#guide" onclick="INSTALLfunction();">  ▼</a></h5>
+                <div id="INSTALLsection" style="display:none">
+                <br><p>
+                  Installing Frostburgh onto a Lego Universe database and client.<br><br>
+
+                  To start off, you will need to download the files for Frostburgh. You can find a download in the section below called "Download". This version of Frostburgh includes the entire zone and all associated missions and content. Credits are given to those who have contributed towards making Frostburgh functional in Lego Universe once again.<br><br>
+
+                  After downloading (and extracting the zip file) you should have this:<br><br>
+                  <img src="img/frostburgh/1files.png" width="135" class="img-fluid" alt=""><br><br>
+
+                  Next you should open <a href="https://sqlitebrowser.org/">DB Browser</a> or your favourite database browser application.<br><br>
+                  <img src="img/frostburgh/2app.png" width="205" class="img-fluid" alt=""><br><br>
+                  <img src="img/frostburgh/3dbbrowser.png" width="914" class="img-fluid" alt=""><br><br>
+
+                  Now assuming that you have converted your client's database to .sqlite, we're going to open it in DB Browser as shown below.<br><br>
+                  <img src="img/frostburgh/4opendatabase.png" width="230" class="img-fluid" alt=""><br><br>
+                  <img src="img/frostburgh/5choosedatabase.png" width="945" class="img-fluid" alt=""><br><br>
+
+                  The database has been loaded into DB Browser.<br><br>
+                  <img src="img/frostburgh/6databaseloaded.png" width="143" class="img-fluid" alt=""><br><br>
+
+                  Click on Execute SQL (or something similar if using a different program).<br><br>
+                  <img src="img/frostburgh/7executesql.png" width="117" class="img-fluid" alt=""><br><br>
+
+                  Click Open SQL and select "FROSTY.sql".<br><br>
+                  <img src="img/frostburgh/8opensql.png" width="208" class="img-fluid" alt=""><br><br>
+                  <img src="img/frostburgh/9selectsql.png" width="946" class="img-fluid" alt=""><br><br>
+
+                  "FROSTY.sql" will have loaded and now you should be seeing this.<br><br>
+                  Click on Execute all/selected SQL to run the SQL code. This will install Frostburgh into the database.<br><br>
+                  <img src="img/frostburgh/10runsql.png" width="612" class="img-fluid" alt=""><br><br>
+
+                  The SQL code would have run and should give you this output. This means the Frostburgh data was successfully inserted into the database.<br><br>
+                  <img src="img/frostburgh/11frostburghinstalled.png" width="551" class="img-fluid" alt=""><br><br>
+
+                  Then make sure to apply the changes.<br><br>
+                  <img src="img/frostburgh/12applychanges.PNG" width="104" class="img-fluid" alt=""><br><br>
+
+
+                  Now you can convert the .sqlite back into .fdb to use it in your client.<br><br><br>
+
+                  Afterwards, go back to the files you downloaded at the start of this guide.<br><br>Copy the "res" folder directly into your Lego Universe client.<br><br>
+                  <img src="img/frostburgh/13copyresfolder.PNG" width="148" class="img-fluid" alt=""><br><br>
+                  
+                  Then copy the contents of "locale.txt" into your client's locale.xml file.<br>
+                  <p class="fst-italic" style="font-size: small">locale.xml can be found in the "locale" folder, which is in the same directory as the "res" folder.</p>
+                  <img src="img/frostburgh/14copylocale.PNG" width="148" class="img-fluid" alt=""><br><br>
+                  <img src="img/frostburgh/15locale.png" width="495" class="img-fluid" alt=""><br><br>
+                  <br><br><br>
+
+
+                  For installing Frostburgh on a server, please see proper DLU server documentation and setup guides for more information. The files included with the download can easily be uploaded to a server host alongside other mandatory files.<br><br>
+                  
+                  JAN-22-2024 edit: Launchpad can be spawned through included NPC.xml - put this on the server. Hex edited file has been replaced by the original file for existing users. New version in downloads.
+
+                </p>
+                </div><br>
+
+                <h5>⸺ Download<a href="#dl" onclick="DLfunction();">  ▼</a></h5>
+                <div id="DLsection" style="display:none">
+                <br><p>
+                  <a href="https://mega.nz/file/zpcwFDrB#A7n_B1DsE8x-Z1paOC1KVh0BEuOUSPdZZApTgzRXw_k">Download</a> (mega.nz)<br>
+                  <a href="https://www.mediafire.com/file/a04fq7yah3fbpst/frosty_22Jan24.zip/file">Download</a> (mediafire)<br>
+                </p>
+                </div>
+              </div></div>
+
+              <br><br>
+
+              <div id="CAMOonclick">
+                <h5>Camouflage<a href="#camouflage" onclick="CAMOfunction();">  ▼</a></h5>
+                <div id="CAMOsection" style="display:none">
+                  <br><p>⸺ Introducing the Camouflage mod</p><br>
+                  <p>Blend in with the Maelstrom!</p><br>
+                  <h6 style="font-size: 14px">Adjusts disguise items allowing weapons and off-hand items be used whilst wearing a disguise, 
+                    adjusts disguise item stats, adds variants of diguises, camouflaged versions of original disguises and variants, 
+                    a grey skateboard mount and a silver horse mount. </h6><br>
+                  
+                  <p>AI Ignores Player</p><br>
+                  <h6 style="font-size: 14px">Using a camoflaged item hides you from a specified list or all enemies.</h6><br>
+                  <img src="img/camouflage/Untitled.png" width="792" class="img-fluid" alt=""><br><br>
+                  <h5>⸺ Download<a href="#camodl" onclick="CAMODLfunction();">  ▼</a></h5>
+
+                  <div id="CAMODLsection" style="display:none">
+                    tba
+                  </div>
+                </div>
+              </div>
+          </div><br><br>
+
+          <!-- FALLOUT76 SECTION -->
+          <div id="FALLOUT76onclick">
+          <img src="img/fallout76.png" width="372" class="img-fluid" alt=""><a href="#FALLOUT76" style="font-size: 50px"; onclick="FALLOUT76function();">  ▼</a></div>
+          <div id="FALLOUT76" style="display:none"><br>
+            <p>
+              tba
+            </p>
+          
+          </div>
+    <br><br><br><br><br><br><br>
+</div>
+
+<div id="network-settings-content" class="custom-page-content hidden">
+  <script src="index.js"></script>
+  <img src="icons/undefined.PNG" style="width: 271px; height: 71px;">
+  <p>a lego universe server</p><br><br><br><br>
+  <p>register interest by joining the waiting room.</p><br>
+
+  <p>undefined is a modded Lego Universe server.</p>
+  <p>users are allowed to participate on a case by case basis.</p>
+  <p>this is a safe space and we do not discriminate.</p><br>
+
+  <p>undefined <b>does not</b> contain any microtransactions or purchases<br>unlike a particularly well known public scam server.</p><br><br>
+
+  <p>more information</p>
+  <a href="https://discord.gg/r9BCcfaXkF"><img src="icons/enter.png" width="96" class="img-fluid" alt=""></a><br><br>
+  <img src="icons/image1.png" style="width: 623px">
+  <br><br><br>
+</div>
+
+</body>
+</html>
